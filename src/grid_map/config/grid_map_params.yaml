@@ -1,0 +1,8 @@
+grid_map_2_5d:
+  resolution: 0.1
+  map_local_size_x: 10
+  map_local_size_y: 10
+  min_height: -10.0
+  max_height: 10.0
+  downsample_resolution: 0.1
+  world_frame_id: "/map"

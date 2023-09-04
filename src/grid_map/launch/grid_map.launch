@@ -1,0 +1,31 @@
+<launch>
+    <arg name="robot_name" default="robot0"/>
+    <arg name="pointcloud_topic" default="points_raw"/>
+    <arg name="imu_topic" default="imu_correct"/>
+    <arg name="rtk_world_topic" default="/jackal0/gps/fix"/>
+    <arg name="rtk_self_topic" default="gps/fix"/>  
+
+    <node ns="$(arg robot_name)" pkg="grid_map" name="grid_map_node" type="grid_map_node" output="screen">
+        <!-- Load parameters -->
+        <rosparam command="load" file="$(find grid_map)/config/grid_map_params.yaml"/>
+        <!-- Subscriptions -->
+        <remap from="~pointcloud" to="$(arg pointcloud_topic)"/>
+        <remap from="~odom" to="dlio/odom_node/odom"/>
+        <remap from="~rtk_self" to="$(arg rtk_self_topic)"/>
+        <remap from="~rtk_world" to="$(arg rtk_world_topic)"/>
+
+        <!-- Publications -->
+        <remap from="~grid_local_map" to="grid_map/grid_local_map"/>
+        <remap from="~grid_global_map" to="grid_map/grid_global_map"/>
+        <remap from="~grid_map_vis" to="grid_map/grid_map_vis"/> 
+        <remap from="~mutil_msg" to="grid_map/mutil_msg"/> 
+    </node>
+
+    <include file="$(find direct_lidar_inertial_odometry)/launch/dlio.launch">
+        <arg name="robot_namespace" value="$(arg robot_name)"/>
+        <arg name="pointcloud_topic" value="$(arg pointcloud_topic)"/>
+        <arg name="imu_topic" value="$(arg imu_topic)"/>
+    </include>
+</launch>
+
+    
