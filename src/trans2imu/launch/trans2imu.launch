@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="trans2imu" name="trans2imu" type="trans2imu" output="screen"/>
+</launch>
